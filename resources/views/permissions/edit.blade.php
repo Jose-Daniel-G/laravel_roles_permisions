@@ -15,6 +15,7 @@
                     {{-- <p>{{$permission->id}}</p> --}}
                     <form action="{{ route('permissions.update', $permission->id)}}" method="POST">
                         @csrf
+                        @method('PUT') {{-- O puedes usar 'PATCH' si solo es una actualización parcial --}}
                         <label for="name" class="text-lg font-medium">Nombre</label>
                         <div class="my-3">
                             <input value="{{old('name',$permission->name)}}" type="text" name="name" id="name" class="border-gray-300 shadow-sm w-1/2 rounded-lg">

@@ -68,12 +68,12 @@ class PermissionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Permission $permission)
+    public function update(Request $request, $id)
     {
+        $permission = Permission::findOrfail($id);
 
-        // dd($request->id);
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:permissions|min:3,name,' . $request->id . ',id'
+            'name' => 'required|min:3|unique:permissions,name,' . $id . ',id'
         ]);
         if ($validator->passes()) {
             $permission->name = $request->name;
@@ -82,7 +82,7 @@ class PermissionController extends Controller
             $permission->save();
             return redirect()->route('permissions.index')->with('success','Permiso Actualizado exitosamente.');
         } else {
-            return redirect()->route('permissions.edit',$request->id)->withInput()->withErrors($validator);
+            return redirect()->route('permissions.edit',$id)->withInput()->withErrors($validator);
         }
     }
 
