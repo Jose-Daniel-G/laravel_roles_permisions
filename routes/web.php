@@ -43,10 +43,11 @@ Route::get('/articulos/{id}/edit', [ArticuloController::class, 'edit'])->name('a
 Route::post('/articulos/{id}', [ArticuloController::class, 'update'])->name('articulos.update');
 Route::delete('/articulos/{id}', [ArticuloController::class, 'destroy'])->name('articulos.destroy');
 //USERS ROUTES
-Route::get('/users', [UserController::class, 'index'])->name('users.index');
+Route::get('/users', [UserController::class, 'index'])->name('users.index');//->middleware('can:users.index');
 Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
 Route::post('/users', [UserController::class, 'store'])->name('users.store');
-Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
+Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');//->middleware('can:users.edit');
+
 Route::post('/users/{id}', [UserController::class, 'update'])->name('users.update');
 Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
 

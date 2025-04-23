@@ -19,17 +19,6 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-        User::create([
-            'name'=>'admin',
-            'email'=> 'admin.admin@gmail.com',
-            'email_verified_at' => now(),
-            'password'=> bcrypt('admin'),
-        ]);
-        User::create([
-            'name'=>'Jose Daniel Grijalba Osorio',
-            'email'=> 'jose.jdgo97@gmail.com',
-            'email_verified_at' => now(),
-            'password'=> bcrypt('123123123'),
-        ]);
+        $this->call([RoleSeeder::class, UserSeeder::class]);
     }
 }
