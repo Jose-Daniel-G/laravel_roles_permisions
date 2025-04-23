@@ -17,7 +17,7 @@ class ArticuloController extends Controller
     public function create()
     {
         // $permissions = ModelsPermission::orderBy('name','ASC')->get();
-        // return view('roles.create',compact('permissions'));
+        // return view('articulos.create',compact('permissions'));
         return view('articulos.create');
     }
 
@@ -30,14 +30,14 @@ class ArticuloController extends Controller
         ]);
     
         if ($validator->passes()) {
-            $article = new Articulo();
+            $articulo = new Articulo();
             $article->titulo = $request->titulo;
             $article->texto = $request->texto;
             $article->autor = $request->autor;
             $article->save();
-            return redirect()->route('articles.index')->with('success','Articulo anadido exitosamente.!');
+            return redirect()->route('articulos.index')->with('success','Articulo anadido exitosamente.!');
         } else {
-            return redirect()->route('articles.create')->withInput()->withErrors($validator);
+            return redirect()->route('articulos.create')->withInput()->withErrors($validator);
         }
     }
 
@@ -48,16 +48,50 @@ class ArticuloController extends Controller
 
     public function edit(string $id)
     {
-        //
+        $articulo = Articulo::findOrFail($id);
+
+        return view('articulos.edit', compact('articulo'));
     }
 
-    public function update(Request $request, string $id)
-    {
-        //
+    public function update(Request $request, $id)
+    {   
+        $articulo = Articulo::findOrFail($id);
+        $validator = Validator::make($request->all(), [
+            'titulo' => 'required|min:5',
+            'autor' => 'required|min:10'
+        ]);
+
+        if ($validator->passes()) {
+            $articulo->titulo = $request->titulo;
+            $articulo->texto = $request->texto;
+            $articulo->autor = $request->autor;
+            $articulo->save();
+
+            return redirect()->route('articulos.index')->with('success', 'Articulo actualizado exitosamente');
+        } else {
+            return redirect()->route('articulos.edit',$id)->withInput()->withErrors($validator);
+        }
+        return view('articulos.index');
     }
 
-    public function destroy(string $id)
-    {
-        //
+    public function destroy(Request $request) {
+        $id = $request->id;
+    
+        $articulo = Articulo::find($id);
+    
+        if ($articulo == null) {
+            session()->flash('error', 'Role not found');
+            // return response()->json([
+            //     'status' => false
+            // ]);
+        }
+    
+        $articulo->delete();
+    
+        session()->flash('success', 'Role deleted successfully');
+        return redirect()->back()->with('success', 'Role eliminado exitosamente.');
+        // return response()->json([
+        //     'status' => true
+        // ]);
     }
 }

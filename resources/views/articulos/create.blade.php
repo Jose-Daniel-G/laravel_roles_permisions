@@ -4,7 +4,7 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Articulos / Crear
             </h2>
-            <a href="{{ route('permissions.index')}}" class="bg-slate-700 text-sm rounded-md px-5 py-3 text-white">Volver</a>
+            <a href="{{ route('articulos.index')}}" class="bg-slate-700 text-sm rounded-md px-5 py-3 text-white">Volver</a>
         </div>
     </x-slot>
 
@@ -12,7 +12,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <form action="{{ route('permissions.store')}}" method="POST">
+                    <form action="{{ route('articulos.store')}}" method="POST">
                         {{-- @method('POST') --}}
                         @csrf
                         <label for="titulo" class="text-lg font-medium">Titulo</label>

@@ -2,9 +2,9 @@
     <x-slot name="header">
 <div class="flex justify-between">
     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        {{ __('Articulos') }}
+        {{ __('Users') }}
     </h2>
-    <a href="{{ route('articulos.create')}}" class="bg-slate-700 text-sm rounded-md px-5 py-3 text-white">Crear</a>
+    <a href="{{ route('users.create')}}" class="bg-slate-700 text-sm rounded-md px-5 py-3 text-white">Crear</a>
 </div>
     </x-slot>
 
@@ -26,28 +26,36 @@
                         <thead class="bg-gray-50">
                             <tr class="border-b">
                                 <th class="px-6 py-3 text-left">#</th>
-                                <th class="px-6 py-3 text-left">Titulo</th>
-                                <th class="px-6 py-3 text-left">Creacion</th>
+                                <th class="px-6 py-3 text-left">Nombre</th>
+                                <th class="px-6 py-3 text-left">Correo</th>
+                                <th class="px-6 py-3 text-left">Roles</th>
+                                <th class="px-6 py-3 text-left">Creado</th>
                                 <th class="px-6 py-3 text-center">Accion</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if ($articulos->isNotEmpty())
-                                @foreach ($articulos as $articulo)
+                            @if ($users->isNotEmpty())
+                                @foreach ($users as $user)
                                 <tr>
                                     <td  class="px-6 py-3 text-left">
-                                        {{ $articulo->id}}
+                                        {{ $user->id}}
                                     </td>
                                     <td  class="px-6 py-3 text-left">
-                                        {{ $articulo->titulo}}
+                                        {{ $user->name}}
                                     </td>
                                     <td  class="px-6 py-3 text-left">
-                                        {{ \Carbon\Carbon::parse($articulo->created_at)->format('d M, Y');}}
+                                        {{ $user->email}}
                                     </td>
                                     <td  class="px-6 py-3 text-left">
-                                        <a href="{{ route('articulos.edit', $articulo->id)}}" class="bg-slate-700 text-sm rounded-md px-5 py-3 py-2 hover:bg-slate-600">Editar</a>
-                                        {{-- <a href="javascript:void(0)" onclick="deletePermission({{$articulo->id}})" class="bg-red-600 text-sm rounded-md px-5 py-3 py-2 hover:bg-red-500">Eliminar</a> --}}
-                                        <form action="{{ route('articulos.destroy', $articulo->id) }}" method="POST" class="inline">
+                                        {{ $user->roles->pluck('name')->implode(', ')}}
+                                    </td>
+                                    <td class="px-6 py-3 text-left">
+                                        {{ \Carbon\Carbon::parse($user->created_at)->format('d M, Y') }}
+                                    </td>
+                                    <td  class="px-6 py-3 text-left">
+                                        <a href="{{ route('users.edit', $user->id)}}" class="bg-slate-700 text-sm rounded-md px-5 py-3 py-2 hover:bg-slate-600">Editar</a>
+                                        {{-- <a href="javascript:void(0)" onclick="deletePermission({{$user->id}})" class="bg-red-600 text-sm rounded-md px-5 py-3 py-2 hover:bg-red-500">Eliminar</a> --}}
+                                        <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="bg-red-600 text-white text-sm rounded-md px-5 py-3 hover:bg-red-500">
@@ -62,7 +70,7 @@
                         </tbody>
                     </table>
                     <div class="my-3">
-                         {{ $articulos->links()}}
+                         {{ $users->links()}}
                     </div>
                    
             </div>
@@ -73,7 +81,7 @@
             function deletePermission(id){
                 if(confirm("Estas seguro, que lo desear borrar?")){
                     $.ajax({
-                        url: '{{ route("articulos.destroy", ":id") }}'.replace(':id', id),
+                        url: '{{ route("users.destroy", ":id") }}'.replace(':id', id),
                         type: 'delete',
                         data: { id: id },
                         dataType: 'json',
@@ -81,7 +89,7 @@
                             'x-csrf-token': {{ csrf_token() }}
                         },
                         success: function(response) {
-                            window.location.href = '{{ route('articulos.index')}}';
+                            window.location.href = '{{ route('users.index')}}';
                         }
                     });
                 }
